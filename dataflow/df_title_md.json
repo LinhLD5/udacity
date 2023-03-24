@@ -1,0 +1,52 @@
+{
+	"name": "df_title_md",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_title",
+						"type": "DatasetReference"
+					},
+					"name": "srcadlstitle"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_NYC_Payroll_TITLE_MD",
+						"type": "DatasetReference"
+					},
+					"name": "tardwTitle"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          TitleCode as string,",
+				"          TitleDescription as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> srcadlstitle",
+				"srcadlstitle sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          TitleCode,",
+				"          TitleDescription",
+				"     )) ~> tardwTitle"
+			]
+		}
+	}
+}
